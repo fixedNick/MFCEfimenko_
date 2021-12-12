@@ -23,7 +23,7 @@ public:
 	virtual void Fillfield(MyDialogE* dlg);
 	virtual void Fillfield(AddDialog* dlg);
 
-	virtual void ReadFromFields(AddDialog* dlg);
+	virtual void ReadFromFields(AddDialog* dlg, bool isFromTab);
 	virtual void DrowInterface(CDC* pDC, int* PosX, int& top, int Height);
 };
 

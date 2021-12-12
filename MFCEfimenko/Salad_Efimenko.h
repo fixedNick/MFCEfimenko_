@@ -25,7 +25,7 @@ public:
 	void GetList(MyDialogE* dlg, int dword);
 	void LoadObj(AddDialog* dlg, int index);
 
-	void save_obj(AddDialog* dlg, bool check, int index =-1);
+	void save_obj(AddDialog* dlg, bool check, bool isFromTab, int index =-1);
 	
 
 };

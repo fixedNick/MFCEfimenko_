@@ -180,11 +180,11 @@ void AddDialog::OnBnClickedOk()//first for add// second for edit
 {
 	if (f_index < 0)
 	{
-		pDoc->saladRecipe.save_obj(this, m_ShowType);
+		pDoc->saladRecipe.save_obj(this, m_ShowType, false);
 	}
 	else
 	{
-		pDoc->saladRecipe.save_obj(this, m_ShowType, f_index);// change exact index
+		pDoc->saladRecipe.save_obj(this, m_ShowType, false, f_index);// change exact index
 	}
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();
@@ -195,28 +195,33 @@ void AddDialog::OnAddFromTabBtnClicked()
 	// Создание объекта через табы, по кнопке ADD FROM TAB [IDC_BUTTON1]
 	if (f_index > 0) throw std::runtime_error("add from tab error. f_index < 0 means edit");
 	int selected_type = TabManager.GetCurSel();
+	bool isApple = false;
 	if (selected_type == 0)
 	{
 		// fruit
 		CString name, amount, price;
-		CEdit* nameEditControl = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT1);
+		CEdit* nameEditControl   = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT1);
 		CEdit* amountEditControl = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT2);
-		CEdit* priceEditControl = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT3);
+		CEdit* priceEditControl  = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT3);
 
 		nameEditControl->GetWindowText(name);
 		amountEditControl->GetWindowText(amount);
 		priceEditControl->GetWindowText(price);
+
+		this->m_name = name;
+		this->m_amount = atoi(amount);
+		this->m_price = atof(price);
 	}
 	else if (selected_type == 1)
 	{
 		// apple
 		CString name, amount, price, color, seed, trees;
-		CEdit* nameEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT1);
-		CEdit* amountEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT2);
-		CEdit* priceEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT3);
-		CEdit* colorEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT4);
-		CEdit* seedEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT5);
-		CEdit* treesEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT7);
+		CEdit* nameEditControl   =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT1);
+		CEdit* amountEditControl =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT2);
+		CEdit* priceEditControl	 =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT3);
+		CEdit* colorEditControl  =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT4);
+		CEdit* seedEditControl	 =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT5);
+		CEdit* treesEditControl  =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT7);
 
 		nameEditControl->GetWindowText(name);
 		amountEditControl->GetWindowText(amount);
@@ -225,8 +230,18 @@ void AddDialog::OnAddFromTabBtnClicked()
 		seedEditControl->GetWindowText(seed);
 		treesEditControl->GetWindowText(trees);
 
+		this->m_name = name;
+		this->m_amount = atoi(amount);
+		this->m_price = atof(price);
+		this->m_color = color;
+		this->m_seeds = atoi(seed);
+		this->m_trees = atoi(trees);
+		isApple = true;
 	}
 	else throw std::runtime_error("selected tab/type error");
+
+	pDoc->saladRecipe.save_obj(this, isApple, true);
+	CDialogEx::OnOK();
 }
 
 void AddDialog::OnBnClickedCheck1()

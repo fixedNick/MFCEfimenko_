@@ -97,9 +97,9 @@ void Fruit_Efimenko::Fillfield(AddDialog* dlg)
 	dlg->UpdateData(false);
 }
 
-void Fruit_Efimenko::ReadFromFields(AddDialog* dlg)
+void Fruit_Efimenko::ReadFromFields(AddDialog* dlg, bool isFromTab)
 {
-	dlg->UpdateData();
+	dlg->UpdateData(!isFromTab); // 
 	name = dlg->m_name;
 	amount = dlg->m_amount;
 	price = dlg->m_price;

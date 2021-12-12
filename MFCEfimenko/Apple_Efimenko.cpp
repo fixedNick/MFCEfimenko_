@@ -104,13 +104,13 @@ void Apple_Efimenko::Fillfield(AddDialog* dlg)
 	dlg->UpdateData(false);
 }
 
-void Apple_Efimenko::ReadFromFields(AddDialog* dlg)
+void Apple_Efimenko::ReadFromFields(AddDialog* dlg, bool isFromTab)
 {
-	dlg->UpdateData(true);
+	dlg->UpdateData(!isFromTab);
 	name = dlg->m_name;
 	amount=dlg->m_amount;
 	price = dlg->m_price;
 	color = dlg->m_color;
-	seed = dlg->m_amount;
+	seed = dlg->m_seeds;
 	trees = dlg->m_trees;
 }

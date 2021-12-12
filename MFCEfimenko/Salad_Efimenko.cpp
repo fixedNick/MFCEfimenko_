@@ -185,23 +185,18 @@ void Salad_Efimenko::LoadObj(AddDialog* dlg, int index)
 		item->Fillfield(dlg);
 }
 
-void Salad_Efimenko::save_obj(AddDialog* dlg, bool check, int index)
+void Salad_Efimenko::save_obj(AddDialog* dlg, bool check, bool isFromTab, int index)
 {
 	shared_ptr<Fruit_Efimenko> newPlate;
-	if (check)
-		newPlate = make_shared <Apple_Efimenko>();
-	else
-		newPlate = make_shared <Fruit_Efimenko>();
-	//read from fields
-	newPlate->ReadFromFields(dlg);
+	if (check) newPlate = make_shared <Apple_Efimenko>();
+	else newPlate = make_shared <Fruit_Efimenko>();
+	
+	newPlate->ReadFromFields(dlg, isFromTab);
+	
 	if (index < 0)
-	{
 		plate.push_back(newPlate);
-	}
 	else
-	{
 		plate[index] = newPlate;
-	}
 
 }
 
