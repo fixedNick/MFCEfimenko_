@@ -52,4 +52,6 @@ public:
 	AppleDialog appleTab;
 	FruitDialog fruitTab;
 	afx_msg void OnTabSelectChange(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedOk2();
+	afx_msg void OnAddFromTabBtnClicked();
 };
