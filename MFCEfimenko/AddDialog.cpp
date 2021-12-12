@@ -119,8 +119,11 @@ BOOL AddDialog::OnInitDialog()
 		pBtn->SetCheck(1);
 	}
 
-	if (f_index >= 0)
+	if (f_index >= 0) 
+	{
+		TabManager.ShowWindow(SW_HIDE);
 		pDoc->saladRecipe.LoadObj(this, f_index);
+	}
 	// TODO:  Add extra initialization here
 
 
