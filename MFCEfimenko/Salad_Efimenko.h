@@ -22,6 +22,7 @@ public:
 	int Delete_fromList(int res);
 	CSize DocSize(CDC* pDC);
 	
+	bool IsApple(int index);
 	void GetList(MyDialogE* dlg, int dword);
 	void LoadObj(AddDialog* dlg, int index);
 

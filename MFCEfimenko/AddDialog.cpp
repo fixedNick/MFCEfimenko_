@@ -114,11 +114,21 @@ BOOL AddDialog::OnInitDialog()
 {
 
 	CDialogEx::OnInitDialog();
+
+
+	CButton* radioBtnApple = (CButton*)GetDlgItem(IDC_RADIO_APPLE);
+	CButton* radioBtnFruit = (CButton*)GetDlgItem(IDC_RADIO_FRUIT);
+
+	radioBtnFruit->SetState(true);
+
+	if (radioBtnFruit->GetCheck())
+	{
+	}
+
+	CButton* pBtn = (CButton*)GetDlgItem(IDC_CHECK1);
+	pBtn->SetCheck(1);
 	if (f_index == -1)
 	{
-		CButton* pBtn = (CButton*)GetDlgItem(IDC_CHECK1);
-		pBtn->SetCheck(1);
-
 		CTabCtrl* tabControl1 = (CTabCtrl*)GetDlgItem(IDC_TAB1);
 		fruitTab.Create(FRUIT_DIALOG, tabControl1);
 
@@ -150,7 +160,16 @@ BOOL AddDialog::OnInitDialog()
 
 	if (f_index >= 0) 
 	{
+		auto isApple = this->pDoc->saladRecipe.IsApple(f_index);
+		if (!isApple)
+		{
+			CButton* pBtn = (CButton*)GetDlgItem(IDC_CHECK1);
+			pBtn->SetCheck(0);
+			
+		} 
 		TabManager.ShowWindow(SW_HIDE);
+		CButton* btnAddFromTab = (CButton*)GetDlgItem(IDC_BUTTON1);
+		btnAddFromTab->ShowWindow(SW_HIDE);
 		pDoc->saladRecipe.LoadObj(this, f_index);
 	}
 	// TODO:  Add extra initialization here

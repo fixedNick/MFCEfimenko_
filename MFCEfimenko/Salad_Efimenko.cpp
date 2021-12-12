@@ -2,6 +2,7 @@
 #include "Salad_Efimenko.h"
 #include "MyDialogE.h"
 #include "AddDialog.h"
+#include <typeinfo>
 
 void Salad_Efimenko::AddFruit()
 {
@@ -151,6 +152,15 @@ CSize Salad_Efimenko::DocSize(CDC* pDC)
 	}
 
 	return docSize;
+}
+
+bool Salad_Efimenko::IsApple(int index)
+{
+	auto frObject = plate.at(index);
+
+	if (typeid(*frObject).name() == typeid(Fruit_Efimenko).name())
+		return false;
+	return true;
 }
 
 void Salad_Efimenko::GetList(MyDialogE* dlg, int dword)
