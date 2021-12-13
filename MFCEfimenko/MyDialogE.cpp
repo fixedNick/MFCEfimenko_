@@ -61,19 +61,22 @@ void MyDialogE::SetAppleFields(bool decision)
 		control_e_color.ShowWindow(SW_SHOWNORMAL);
 		control_e_seeds.ShowWindow(SW_SHOWNORMAL);
 		control_e_trees.ShowWindow(SW_SHOWNORMAL);
-		//GetDlgItem(IDC_STATIC5)->EnableWindow();
-		
+		GetDlgItem(IDC_STATIC_COLOR)->ShowWindow(SW_SHOWNORMAL);
+		GetDlgItem(IDC_STATIC_SEEDS)->ShowWindow(SW_SHOWNORMAL);
+		GetDlgItem(IDC_STATIC_TREES)->ShowWindow(SW_SHOWNORMAL);
 	}
 	else
 	{
 		//SW_HIDE
+		GetDlgItem(IDC_STATIC_COLOR)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_STATIC_SEEDS)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_STATIC_TREES)->ShowWindow(SW_HIDE);
 		control_e_name.ShowWindow(SW_HIDE);
 		control_e_amount.ShowWindow(SW_HIDE);
 		control_e_price.ShowWindow(SW_HIDE);
 		control_e_color.ShowWindow(SW_HIDE);
 		control_e_seeds.ShowWindow(SW_HIDE);
 		control_e_trees.ShowWindow(SW_HIDE);
-		//GetDlgItem(IDC_STATIC5)->ShowWindow(SW_HIDE);
 
 	}
 }

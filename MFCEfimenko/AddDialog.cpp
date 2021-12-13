@@ -30,24 +30,24 @@ AddDialog::~AddDialog()
 }
 void AddDialog::SetFruitFields(bool decision)
 {
-		if (decision)
-		{
-			//SHOWNORMAL
-			e_control_name.ShowWindow(SW_SHOWNORMAL);
-			e_control_amount.ShowWindow(SW_SHOWNORMAL);
-			e_control_price.ShowWindow(SW_SHOWNORMAL);
-			//GetDlgItem(IDC_STATIC)->ShowWindow(SW_SHOWNORMAL);
+	if (decision)
+	{
+		//SHOWNORMAL
+		e_control_name.ShowWindow(SW_SHOWNORMAL);
+		e_control_amount.ShowWindow(SW_SHOWNORMAL);
+		e_control_price.ShowWindow(SW_SHOWNORMAL);
+		//GetDlgItem(IDC_STATIC)->ShowWindow(SW_SHOWNORMAL);
 
-		}
-		else
-		{
-			//SW_HIDE
-			e_control_name.ShowWindow(SW_HIDE);
-			e_control_amount.ShowWindow(SW_HIDE);
-			e_control_price.ShowWindow(SW_HIDE);
-			//GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
+	}
+	else
+	{
+		//SW_HIDE
+		e_control_name.ShowWindow(SW_HIDE);
+		e_control_amount.ShowWindow(SW_HIDE);
+		e_control_price.ShowWindow(SW_HIDE);
+		//GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
 
-		}
+	}
 }
 
 
@@ -61,12 +61,18 @@ void AddDialog::SetAppleFields(bool decision)
 		e_control_color.ShowWindow(SW_SHOWNORMAL);
 		e_control_seeds.ShowWindow(SW_SHOWNORMAL);
 		e_control_trees.ShowWindow(SW_SHOWNORMAL);
+		GetDlgItem(IDC_STATIC_COLOR)->ShowWindow(SW_SHOWNORMAL);
+		GetDlgItem(IDC_STATIC_SEEDS)->ShowWindow(SW_SHOWNORMAL);
+		GetDlgItem(IDC_STATIC_TREES)->ShowWindow(SW_SHOWNORMAL);
 		//GetDlgItem(IDC_STATIC5)->EnableWindow();
 
 	}
 	else
 	{
 		//SW_HIDE
+		GetDlgItem(IDC_STATIC_COLOR)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_STATIC_SEEDS)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_STATIC_TREES)->ShowWindow(SW_HIDE);
 		e_control_name.ShowWindow(SW_HIDE);
 		e_control_amount.ShowWindow(SW_HIDE);
 		e_control_price.ShowWindow(SW_HIDE);
@@ -74,7 +80,7 @@ void AddDialog::SetAppleFields(bool decision)
 		e_control_seeds.ShowWindow(SW_HIDE);
 		e_control_trees.ShowWindow(SW_HIDE);
 		//GetDlgItem(IDC_STATIC5)->ShowWindow(SW_HIDE);
-		}
+	}
 }
 
 void AddDialog::DoDataExchange(CDataExchange* pDX)
@@ -94,6 +100,7 @@ void AddDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT2_TREES, e_control_trees);
 	DDX_Radio(pDX, IDC_RADIO_FRUIT, m_ShowType);
 	DDX_Control(pDX, IDC_TAB1, TabManager);
+	DDX_Control(pDX, IDC_RADIO_APPLE, m_appleRadio);
 }
 
 
@@ -116,19 +123,19 @@ BOOL AddDialog::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 
+	// Необязательное объеявления,функцию ниже можно привести к следующему виду, если не хотим получать одну из радио кнопок
+	// GetDlgItem(IDC_RADIO_APPLE)->GetParent()->CheckRadioButton(IDC_RADIO_FRUIT, IDC_RADIO_APPLE, IDC_RADIO_APPLE);
 	CButton* radioBtnApple = (CButton*)GetDlgItem(IDC_RADIO_APPLE);
-	CButton* radioBtnFruit = (CButton*)GetDlgItem(IDC_RADIO_FRUIT);
 
-	radioBtnFruit->SetState(true);
-
-	if (radioBtnFruit->GetCheck())
-	{
-	}
+	// Изначально делаем так, чтобы кнопка стояла на Fruit
 
 	CButton* pBtn = (CButton*)GetDlgItem(IDC_CHECK1);
 	pBtn->SetCheck(1);
 	if (f_index == -1)
 	{
+		m_appleRadio.GetParent()->CheckRadioButton(IDC_RADIO_FRUIT, IDC_RADIO_APPLE, IDC_RADIO_APPLE);
+		UpdateData(true);
+
 		CTabCtrl* tabControl1 = (CTabCtrl*)GetDlgItem(IDC_TAB1);
 		fruitTab.Create(FRUIT_DIALOG, tabControl1);
 
@@ -157,24 +164,36 @@ BOOL AddDialog::OnInitDialog()
 		fruitTab.ShowWindow(SW_SHOW);
 		appleTab.ShowWindow(SW_HIDE);
 	}
-
-	if (f_index >= 0) 
+	else if (f_index >= 0)
 	{
 		auto isApple = this->pDoc->saladRecipe.IsApple(f_index);
 		if (!isApple)
 		{
 			CButton* pBtn = (CButton*)GetDlgItem(IDC_CHECK1);
 			pBtn->SetCheck(0);
-			
-		} 
+
+			m_appleRadio.GetParent()->CheckRadioButton(IDC_RADIO_FRUIT, IDC_RADIO_APPLE, IDC_RADIO_FRUIT);
+
+			GetDlgItem(IDC_EDIT2_COLOR)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT2_SEEDS)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT2_TREES)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_STATIC_COLOR)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC_SEEDS)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC_TREES)->ShowWindow(SW_HIDE);
+			UpdateData(true);
+		}
+		else
+		{
+			m_appleRadio.GetParent()->CheckRadioButton(IDC_RADIO_FRUIT, IDC_RADIO_APPLE, IDC_RADIO_APPLE);
+			UpdateData(true);
+		}
 		TabManager.ShowWindow(SW_HIDE);
 		CButton* btnAddFromTab = (CButton*)GetDlgItem(IDC_BUTTON1);
 		btnAddFromTab->ShowWindow(SW_HIDE);
 		pDoc->saladRecipe.LoadObj(this, f_index);
 	}
-	// TODO:  Add extra initialization here
-	return TRUE;  // return TRUE unless you set the focus to a control
-				  // EXCEPTION: OCX Property Pages should return FALSE
+	return true;
 }
 
 
@@ -219,9 +238,9 @@ void AddDialog::OnAddFromTabBtnClicked()
 	{
 		// fruit
 		CString name, amount, price;
-		CEdit* nameEditControl   = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT1);
+		CEdit* nameEditControl = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT1);
 		CEdit* amountEditControl = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT2);
-		CEdit* priceEditControl  = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT3);
+		CEdit* priceEditControl = (CEdit*)fruitTab.GetDlgItem(IDC_EDIT3);
 
 		nameEditControl->GetWindowText(name);
 		amountEditControl->GetWindowText(amount);
@@ -235,12 +254,12 @@ void AddDialog::OnAddFromTabBtnClicked()
 	{
 		// apple
 		CString name, amount, price, color, seed, trees;
-		CEdit* nameEditControl   =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT1);
-		CEdit* amountEditControl =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT2);
-		CEdit* priceEditControl	 =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT3);
-		CEdit* colorEditControl  =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT4);
-		CEdit* seedEditControl	 =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT5);
-		CEdit* treesEditControl  =	(CEdit*)appleTab.GetDlgItem(IDC_EDIT7);
+		CEdit* nameEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT1);
+		CEdit* amountEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT2);
+		CEdit* priceEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT3);
+		CEdit* colorEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT4);
+		CEdit* seedEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT5);
+		CEdit* treesEditControl = (CEdit*)appleTab.GetDlgItem(IDC_EDIT7);
 
 		nameEditControl->GetWindowText(name);
 		amountEditControl->GetWindowText(amount);
